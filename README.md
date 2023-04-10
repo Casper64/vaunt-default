@@ -1,6 +1,8 @@
 # Vaunt Default Theme
 
-This is a theme you can use to make your [Vaunt App](https://github.com/Casper64/vaunt).
+A theme you can use to make your [Vaunt App](https://github.com/Casper64/vaunt).
+
+![Screenshot 2023-04-11 000451](https://user-images.githubusercontent.com/43839798/231008104-687db058-b3ab-4f03-ae05-0b47de43164f.png)
 
 ## Requirements
 Make sure you have V installed. You can check out the 
@@ -25,10 +27,23 @@ sudo -u postgres psql -c "create database vaunt"
 Change your credentials in `main.v` to connect to the database.
 
 ## Quick Start
+Clone the repository and go into the directory
+```
+git clone https://github.com/Casper64/vaunt-default vaunt-app
+cd vaunt-app
+```
+
 Start the dev server by running the following command:
 ```
 v run main.v
 ```
+
+## Admin Panel
+The admin panel is accessible at the "/admin" route, or if you click the
+`"Admin Panel"` button.
+
+You can create and edit articles using the visual editor and when you're done just
+hit the `publish` button to view the generated html.
 
 ## Generate
 You can generate the static site by passing the `--generate` flag or `-g` for short.
