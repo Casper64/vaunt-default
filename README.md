@@ -1,0 +1,61 @@
+# Vaunt Default Theme
+
+This is a theme you can use to make your [Vaunt App](https://github.com/Casper64/vaunt).
+
+## Requirements
+Make sure you have V installed. You can check out the 
+[documentation](https://github.com/vlang/v/#installing-v-from-source) to install V.
+
+If you have installed V make sure you have the latest version installed by running `v up`.
+
+## Installation
+Run the following command to install Vaunt with the V package manager:
+```
+v install --git https://github.com/Casper64/vaunt
+```
+
+Now you are able to import Vaunt directly into your projects with `import vaunt`!
+
+## Database
+For now Vaunt only supports PostgreSQL. You can start a database with 
+```
+sudo -u postgres psql -c "create database vaunt"
+```
+
+Change your credentials in `main.v` to connect to the database.
+
+## Quick Start
+Start the dev server by running the following command:
+```
+v run main.v
+```
+
+## Generate
+You can generate the static site by passing the `--generate` flag or `-g` for short.
+All files needed to host your website will be in the generated `public` directory.
+```
+v run main.v --generate
+``` 
+
+## Folder Structure
+```tree
+.
+├── public   // contains all files to host your static website
+├── static   // contains all static assets and will be available globally
+├── templates/
+│   ├── articles/    // Directory that contains all generated html for an article
+│   │   └── [id].html   // html for article with id=[id]
+│   ├── home.html    // Home page (index.html)
+│   └── layout.html  // Default layout
+├── uploads  // contains all image uploads
+└── main.v   // entrypoint
+```
+
+## CSS
+`blocks.css`: An article will generate plain html, `blocks.css` contains all 
+css used for styling the blocks.
+
+`codemirror.css`: css for the code blocks. It uses the theme
+[One Dark](https://github.com/codemirror/theme-one-dark).
+
+`main.css`: General and layout styling.
