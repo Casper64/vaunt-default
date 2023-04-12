@@ -10,12 +10,6 @@ Make sure you have V installed. You can check out the
 
 If you have installed V make sure you have the latest version installed by running `v up`.
 
-## Installation
-Run the following command to install Vaunt with the V package manager:
-```
-v install --git https://github.com/Casper64/vaunt
-```
-
 Now you are able to import Vaunt directly into your projects with `import vaunt`!
 
 ## Database
@@ -32,6 +26,11 @@ Clone the repository and go into the directory
 git clone https://github.com/Casper64/vaunt-default vaunt-app
 cd vaunt-app
 ```
+
+### Installation
+Run `v install` to install Vaunt with the V package manager.
+Now you are able to import Vaunt directly into your projects with `import vaunt`!
+
 
 Start the dev server by running the following command:
 ```
