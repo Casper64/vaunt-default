@@ -88,7 +88,21 @@ pub fn (mut app App) article_page(article_id int) vweb.Result {
 	return app.html(layout)
 }
 
-// string format function used in templates
+// will be generated to `about.html` when no route attribute is provided
+pub fn (mut app App) about() vweb.Result {
+	// html title
+	title := 'Vaunt | About'
+
+	// render content into our layout
+	content := $tmpl('./templates/about.html')
+	layout := $tmpl('./templates/layout.html')
+
+	// save the html for the generator
+	app.s_html = layout
+	return app.html(layout)
+}
+
+// string format function used in home.html
 pub fn format_time(t_str string) string {
 	t := time.parse(t_str) or { return '' }
 	return t.md() + 'th'
