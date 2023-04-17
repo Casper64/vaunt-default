@@ -66,7 +66,9 @@ v run src --generate
 │   ├── home.html    // Home page (index.html)
 │   └── layout.html  // Default layout
 ├── uploads  // contains all image uploads
-└── main.v   // entrypoint
+└── src   // project files
+    ├── main.v  // entrypoint
+    └── theme.v // theme settings
 ```
 
 ## CSS
