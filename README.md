@@ -34,7 +34,7 @@ Now you are able to import Vaunt directly into your projects with `import vaunt`
 
 Start the dev server by running the following command:
 ```
-v run main.v
+v watch run src
 ```
 
 ## Admin Panel
@@ -44,11 +44,15 @@ The admin panel is accessible at the "/admin" route, or if you click the
 You can create and edit articles using the visual editor and when you're done just
 hit the `publish` button to view the generated html.
 
+## Theme Settings
+You can edit the theme settings in the `Theme` section of the admin panel. Or by 
+changing the default values in `src/theme.v`.
+
 ## Generate
 You can generate the static site by passing the `--generate` flag or `-g` for short.
 All files needed to host your website will be in the generated `public` directory.
 ```
-v run main.v --generate
+v run src --generate
 ``` 
 
 ## Folder Structure

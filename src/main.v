@@ -7,28 +7,33 @@ import os
 import time
 
 const (
-	template_dir = os.abs_path('templates') // where you want to store templates
-	upload_dir   = os.abs_path('uploads') // where you want to store uploads
+	template_dir = 'src/templates' // where you want to store templates
+	upload_dir   = 'uploads' // where you want to store uploads
 )
 
 // Base app for Vaunt which you can extend
 struct App {
 	vweb.Context
+	vaunt.Util
 pub:
 	controllers  []&vweb.ControllerPath
 	template_dir string                 [vweb_global]
 	upload_dir   string                 [vweb_global]
 pub mut:
-	db     pg.DB  [vweb_global]
-	dev    bool   [vweb_global] // used by Vaunt internally
-	s_html string // used by Vaunt to generate html
+	db     pg.DB       [vweb_global]
+	dev    bool        [vweb_global] // used by Vaunt internally
+	theme  ThemeConfig // Theming configuration
+	s_html string      // used by Vaunt to generate html
 }
 
 fn main() {
 	// insert your own credentials
 	db := pg.connect(user: 'dev', password: 'password', dbname: 'vaunt')!
+
+	// init theme configuration
+	theme := get_theme()
 	// setup database and controllers
-	controllers := vaunt.init(db, template_dir, upload_dir)!
+	controllers := vaunt.init(db, template_dir, upload_dir, theme)!
 
 	// create the app
 	mut app := &App{
@@ -44,6 +49,16 @@ fn main() {
 	vaunt.start(mut app, 8080)!
 }
 
+// fetch the new latest theme before processing a request
+pub fn (mut app App) before_request() {
+	// only update when request is a route, assuming all resources contain a "."
+	if app.req.url.contains('..') == false {
+		colors_css := vaunt.update_theme(app.db, mut app.theme)
+		// store the generated css (see `templates/layout.html`)
+		app.styles << colors_css
+	}
+}
+
 // The index.html page
 ['/']
 pub fn (mut app App) home() vweb.Result {
@@ -54,8 +69,8 @@ pub fn (mut app App) home() vweb.Result {
 	articles := vaunt.get_all_articles(mut app.db).filter(it.show == true)
 
 	// render content into our layout
-	content := $tmpl('./templates/home.html')
-	layout := $tmpl('./templates/layout.html')
+	content := $tmpl('templates/home.html')
+	layout := $tmpl('templates/layout.html')
 
 	// save the html for the generator
 	app.s_html = layout
@@ -81,7 +96,7 @@ pub fn (mut app App) article_page(article_id int) vweb.Result {
 		eprintln(err)
 		return app.not_found()
 	}
-	layout := $tmpl('./templates/layout.html')
+	layout := $tmpl('templates/layout.html')
 
 	// save the html for the generator
 	app.s_html = layout
@@ -94,8 +109,8 @@ pub fn (mut app App) about() vweb.Result {
 	title := 'Vaunt | About'
 
 	// render content into our layout
-	content := $tmpl('./templates/about.html')
-	layout := $tmpl('./templates/layout.html')
+	content := $tmpl('templates/about.html')
+	layout := $tmpl('templates/layout.html')
 
 	// save the html for the generator
 	app.s_html = layout

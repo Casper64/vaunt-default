@@ -8,13 +8,16 @@
     <!-- Roboto Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    @for style in app.styles
+    <style>@{style}</style>
+    @end
 
     <link rel="stylesheet" href="/css/main.css"/>
     <link rel="stylesheet" href="/css/blocks.css"/>
     <link rel="stylesheet" href="/css/codemirror.css"/>
 </head>
 <body>
-<nav>
+<nav class="@{app.theme.nav_align.selected}">
     <a href="/" class="brand">Vaunt</a>
     <div class="nav-links">
         <a href="/">Home</a>
