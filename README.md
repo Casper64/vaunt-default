@@ -64,6 +64,7 @@ v run src --generate
 └── src      // project files
     ├── templates/
     │   ├── articles/    // Directory that contains all generated html for an article
+    │   ├── [categories]    // category folders
     │   │   └── [id].html   // html for article with id=[id]
     │   ├── home.html    // Home page (index.html)
     │   └── layout.html  // Default layout
