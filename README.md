@@ -60,14 +60,15 @@ v run src --generate
 .
 ├── public   // contains all files to host your static website
 ├── static   // contains all static assets and will be available globally
-├── templates/
-│   ├── articles/       // Directory that contains all generated html for an article
-│   ├── [categories]    // category folders
-│   │   └── [id].html   // html for article with id=[id]
-│   ├── home.html       // Home page (index.html)
-│   └── layout.html     // Default layout
 ├── uploads  // contains all image uploads
-└── main.v   // entrypoint
+└── src      // project files
+    ├── templates/
+    │   ├── articles/    // Directory that contains all generated html for an article
+    │   │   └── [id].html   // html for article with id=[id]
+    │   ├── home.html    // Home page (index.html)
+    │   └── layout.html  // Default layout
+    ├── main.v  // entrypoint
+    └── theme.v // theme settings
 ```
 
 ## CSS
