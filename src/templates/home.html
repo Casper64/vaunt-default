@@ -1,7 +1,21 @@
-<h1>All articles:</h1>
 <div class="articles">
-@for article in articles
-    <a href="/articles/@article.id" class="article">
+<!-- Articles with Category -->
+@for category in categories
+    <h2>Category @category.name</h2>
+    @for article in articles.filter(it.category_id == category.id)
+    <a href="@{app.category_article_url(category.name, article.name)}" class="article">
+        <h2>@article.name</h2>
+        <img class="article-img" src="@article.image_src">
+        <p class="description">@article.description</p>
+        <p class="date">@{format_time(article.updated_at)}</p>
+        <p class="category">@category.name</p>
+    </a>
+    @endfor
+@endfor
+    <h2>Other Articles</h2>
+<!-- Articles without a Category -->
+@for article in articles.filter(it.category_id == 0)
+    <a href="@{app.article_url(article.name)}" class="article">
         <h2>@article.name</h2>
         <img class="article-img" src="@article.image_src">
         <p class="description">@article.description</p>

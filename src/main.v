@@ -20,8 +20,8 @@ pub:
 	template_dir string                 [vweb_global]
 	upload_dir   string                 [vweb_global]
 pub mut:
-	db     pg.DB       [vweb_global]
 	dev    bool        [vweb_global] // used by Vaunt internally
+	db     pg.DB
 	theme  ThemeConfig // Theming configuration
 	s_html string      // used by Vaunt to generate html
 }
@@ -67,6 +67,7 @@ pub fn (mut app App) home() vweb.Result {
 
 	// get all articles that we want to display
 	articles := vaunt.get_all_articles(mut app.db).filter(it.show == true)
+	categories := vaunt.get_all_categories(mut app.db)
 
 	// render content into our layout
 	content := $tmpl('templates/home.html')
@@ -74,14 +75,13 @@ pub fn (mut app App) home() vweb.Result {
 
 	// save the html for the generator
 	app.s_html = layout
-	return app.html(layout)
+	return app.html(app.s_html)
 }
 
-// Article pages
-['/articles/:article_id']
-pub fn (mut app App) article_page(article_id int) vweb.Result {
-	// we don't want to render articles where `show` is set to `false`
-	article := vaunt.get_article(mut app.db, article_id) or { return app.not_found() }
+// Article pages with a category
+['/articles/:category_name/:article_name']
+pub fn (mut app App) category_article_page(category_name string, article_name string) vweb.Result {
+	article := vaunt.get_article_by_name(mut app.db, article_name) or { return app.not_found() }
 	if article.show == false {
 		return app.not_found()
 	}
@@ -89,8 +89,9 @@ pub fn (mut app App) article_page(article_id int) vweb.Result {
 	title := 'Vaunt | ${article.name}'
 
 	// If you press the `publish` button in the admin panel the html will be generated
-	// and outputted to  `"[template_dir]/articles/[article_id].html"`.
-	article_file := os.join_path(app.template_dir, 'articles', '${article_id}.html')
+	// and outputted to  `"[template_dir]/articles/[category_name]/[article_name].html"`.
+	mut article_file := os.join_path(app.template_dir, 'articles', category_name, '${article_name}.html')
+
 	// read the generated article html file
 	content := os.read_file(article_file) or {
 		eprintln(err)
@@ -100,7 +101,33 @@ pub fn (mut app App) article_page(article_id int) vweb.Result {
 
 	// save the html for the generator
 	app.s_html = layout
-	return app.html(layout)
+	return app.html(app.s_html)
+}
+
+// Article pages without a category
+['/articles/:article_name']
+pub fn (mut app App) article_page(article_name string) vweb.Result {
+	// we don't want to render articles where `show` is set to `false`
+	article := vaunt.get_article_by_name(mut app.db, article_name) or { return app.not_found() }
+	if article.show == false {
+		return app.not_found()
+	}
+	// html title
+	title := 'Vaunt | ${article.name}'
+
+	// If you press the `publish` button in the admin panel the html will be generated
+	// and outputted to  `"[template_dir]/articles/[article_name].html"`.
+	mut article_file := os.join_path(app.template_dir, 'articles', '${article_name}.html')
+	// read the generated article html file
+	content := os.read_file(article_file) or {
+		eprintln(err)
+		return app.not_found()
+	}
+	layout := $tmpl('templates/layout.html')
+
+	// save the html for the generator
+	app.s_html = layout
+	return app.html(app.s_html)
 }
 
 // will be generated to `about.html` when no route attribute is provided
@@ -115,6 +142,11 @@ pub fn (mut app App) about() vweb.Result {
 	// save the html for the generator
 	app.s_html = layout
 	return app.html(layout)
+}
+
+// redirect to home (also fix for admin panel)
+pub fn (mut app App) not_found() vweb.Result {
+	return app.redirect('/')
 }
 
 // string format function used in home.html
