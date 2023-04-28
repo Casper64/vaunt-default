@@ -1,4 +1,5 @@
 <div class="articles">
+    
 <!-- Articles with Category -->
 @for category in categories
     <h2>Category @category.name</h2>
@@ -12,7 +13,8 @@
     </a>
     @endfor
 @endfor
-    <h2>Other Articles</h2>
+    
+<h2>Other Articles</h2>
 <!-- Articles without a Category -->
 @for article in articles.filter(it.category_id == 0)
     <a href="@{app.article_url(article.name)}" class="article">
@@ -22,4 +24,5 @@
         <p class="date">@{format_time(article.updated_at)}</p>
     </a>
 @endfor
+
 </div>
