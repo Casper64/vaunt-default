@@ -11,6 +11,7 @@ pub mut:
 	nav_align  vaunt.ClassList
 }
 
+// Provide default theme settings
 fn get_theme() ThemeConfig {
 	return ThemeConfig{
 		primary: '#68a1d1'
