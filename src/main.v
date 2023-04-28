@@ -45,7 +45,7 @@ fn main() {
 		// set SEO default settings
 		seo: vaunt.SEO{
 			// insert your website url below:
-			website_url: 'https://example.com'
+			// website_url: 'https://example.com'
 			twitter: vaunt.Twitter{
 				card_type: .summary
 				site: '@your_name'
