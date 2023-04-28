@@ -21,6 +21,7 @@ pub:
 	upload_dir   string                 [vweb_global]
 pub mut:
 	dev    bool        [vweb_global] // used by Vaunt internally
+	seo    vaunt.SEO   [vweb_global] // SEO configuration
 	db     pg.DB
 	theme  ThemeConfig // Theming configuration
 	s_html string      // used by Vaunt to generate html
@@ -41,6 +42,23 @@ fn main() {
 		upload_dir: upload_dir
 		db: db
 		controllers: controllers
+		// set SEO default settings
+		seo: vaunt.SEO{
+			// insert your website url below:
+			website_url: 'https://example.com'
+			twitter: vaunt.Twitter{
+				card_type: .summary
+				site: '@your_name'
+				creator: '@your_name'
+			}
+			og: vaunt.OpenGraph{
+				site_name: 'Example'
+				article: vaunt.OpenGraphArticle{
+					// article author(s)
+					author: ['Your Name']
+				}
+			}
+		}
 	}
 
 	// serve all css files from 'static'
@@ -52,16 +70,18 @@ fn main() {
 // fetch the new latest theme before processing a request
 pub fn (mut app App) before_request() {
 	// only update when request is a route, assuming all resources contain a "."
-	if app.req.url.contains('..') == false {
-		colors_css := vaunt.update_theme(app.db, mut app.theme)
-		// store the generated css (see `templates/layout.html`)
-		app.styles << colors_css
+	if app.req.url.contains('.') == false {
+		app.theme_css = vaunt.update_theme(app.db, mut app.theme)
 	}
 }
 
 // The index.html page
 ['/']
 pub fn (mut app App) home() vweb.Result {
+	app.seo.og.title = 'My Blog'
+	app.seo.set_description('My first blog with Vaunt')
+	app.seo.set_url('')
+
 	// html title
 	title := 'Home'
 
@@ -85,6 +105,9 @@ pub fn (mut app App) category_article_page(category_name string, article_name st
 	if article.show == false {
 		return app.not_found()
 	}
+	// set seo automatically
+	app.seo.set_article(article, app.req.url)
+
 	// html title
 	title := 'Vaunt | ${article.name}'
 
@@ -112,6 +135,9 @@ pub fn (mut app App) article_page(article_name string) vweb.Result {
 	if article.show == false {
 		return app.not_found()
 	}
+	// set seo automatically
+	app.seo.set_article(article, app.req.url)
+
 	// html title
 	title := 'Vaunt | ${article.name}'
 
@@ -132,6 +158,10 @@ pub fn (mut app App) article_page(article_name string) vweb.Result {
 
 // will be generated to `about.html` when no route attribute is provided
 pub fn (mut app App) about() vweb.Result {
+	app.seo.og.title = 'About Me'
+	app.seo.set_description('This is a page about me')
+	app.seo.set_url(app.req.url)
+
 	// html title
 	title := 'Vaunt | About'
 
@@ -144,7 +174,7 @@ pub fn (mut app App) about() vweb.Result {
 	return app.html(layout)
 }
 
-// redirect to home (also fix for admin panel)
+// redirect to home when an url is not found
 pub fn (mut app App) not_found() vweb.Result {
 	return app.redirect('/')
 }

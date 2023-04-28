@@ -127,4 +127,5 @@ nav.nav-right {
     max-width: 300px;
     max-height: 180px;
     grid-row: span 3;
+    justify-self: center;
 }
