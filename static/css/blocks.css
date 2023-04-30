@@ -14,6 +14,10 @@ p a {
     text-decoration: underline;
 }
 
+p {
+    line-height: 22px;
+}
+
 .table {
     position: relative;
     display: grid;
@@ -100,6 +104,7 @@ p a {
 }
 
 .quote-block blockquote {
+    background-color: rgba(var(--color-primary-rgb), 0.1);
     border-left: 8px solid var(--color-primary);
     padding: 10px 0px 10px 30px;
     font-weight: 300;
@@ -108,22 +113,11 @@ p a {
     position: relative;
 }
 
-.quote-block blockquote::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--color-primary);
-    opacity: 10%;
-    z-index: -1;
-}
 
 .quote-block .quote-caption, .img-block .img-caption, .embed-block .embed-caption, .code-block .language-name {
     padding-left: 5px;
-    color: #3b3b3b;   
-    font-size: 14px;  
+    color: #3b3b3b;
+    font-size: 14px;
 }
 
 .img-block, .embed-block {
@@ -151,4 +145,47 @@ p a {
 
 .code-block {
     margin: 2em auto;
+}
+
+code.inline-code {
+    background: rgba(var(--color-primary-rgb), 0.1);
+    color: var(--color-primary);
+    padding: 3px 4px;
+    border-radius: 5px;
+    margin: 0 1px;
+    font-family: inherit;
+    font-size: 0.86em;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+
+button.copy-to-clipboard-button {
+    border-radius: 5px !important;
+    margin: 4px;
+    padding: 8px !important;;
+    background: rgba(255,255,255, 0.1) !important;
+    color: #cccccc !important;
+    transition: background .2s ease;
+}
+
+button.copy-to-clipboard-button:hover {
+    background: rgba(255,255,255, 0.25) !important;
+    cursor: pointer;
+}
+
+button.copy-to-clipboard-button span {
+    width: 16px;
+    height: 16px;
+    display: block;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' aria-hidden='true' height='16' viewBox='0 0 16 16' version='1.1' width='16' data-view-component='true'%3E%3Cpath fill='%237d8590' d='M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z'%3E%3C/path%3E%3Cpath fill='%237d8590' d='M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z'%3E%3C/path%3E%3C/svg%3E");
+}
+
+button.copy-to-clipboard-button[data-copy-state="copy-success"] {
+    background: rgba(var(--color-primary-rgb), 0.4) !important;
+}
+
+button.copy-to-clipboard-button[data-copy-state="copy-success"] span {
+    background-image: unset !important;
+    width: auto;
 }
