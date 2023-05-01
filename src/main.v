@@ -116,10 +116,11 @@ pub fn (mut app App) category_article_page(category_name string, article_name st
 	mut article_file := os.join_path(app.template_dir, 'articles', category_name, '${article_name}.html')
 
 	// read the generated article html file
-	content := os.read_file(article_file) or {
+	article_html := os.read_file(article_file) or {
 		eprintln(err)
 		return app.not_found()
 	}
+	content := $tmpl('templates/article.html')
 	layout := $tmpl('templates/layout.html')
 
 	// save the html for the generator
@@ -145,10 +146,11 @@ pub fn (mut app App) article_page(article_name string) vweb.Result {
 	// and outputted to  `"[template_dir]/articles/[article_name].html"`.
 	mut article_file := os.join_path(app.template_dir, 'articles', '${article_name}.html')
 	// read the generated article html file
-	content := os.read_file(article_file) or {
+	article_html := os.read_file(article_file) or {
 		eprintln(err)
 		return app.not_found()
 	}
+	content := $tmpl('templates/article.html')
 	layout := $tmpl('templates/layout.html')
 
 	// save the html for the generator
