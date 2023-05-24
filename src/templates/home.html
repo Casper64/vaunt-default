@@ -4,7 +4,7 @@
 @for category in categories
     <h2>Category @category.name</h2>
     @for article in articles.filter(it.category_id == category.id)
-    <a href="@{app.category_article_url(category.name, article.name)}" class="article">
+    <a href="@{app.article_url(app.db, article)}" class="article">
         <h2>@article.name</h2>
         <img class="article-img" src="@article.image_src" alt="[image]">
         <p class="description">@article.description</p>
@@ -17,7 +17,7 @@
 <h2>Other Articles</h2>
 <!-- Articles without a Category -->
 @for article in articles.filter(it.category_id == 0)
-    <a href="@{app.article_url(article.name)}" class="article">
+    <a href="@{app.article_url(app.db, article)}" class="article">
         <h2>@article.name</h2>
         <img class="article-img" src="@article.image_src" alt="[image]">
         <p class="description">@article.description</p>

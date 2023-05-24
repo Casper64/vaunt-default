@@ -38,6 +38,15 @@ v watch run src
 ```
 
 ## Admin Panel
+
+### Create a user
+To be able to access the admin you will need to create a superuser.
+
+```bash
+v run src --create-superuser
+```
+
+
 The admin panel is accessible at the "/admin" route, or if you click the
 `"Admin Panel"` button.
 

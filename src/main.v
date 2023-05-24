@@ -9,16 +9,17 @@ import time
 const (
 	template_dir = 'src/templates' // where you want to store templates
 	upload_dir   = 'uploads' // where you want to store uploads
+	app_secret   = 'my-256-bit-secret' // secret key used to generate secure hashes
 )
 
 // Base app for Vaunt which you can extend
 struct App {
 	vweb.Context
+	vweb.Controller
 	vaunt.Util
 pub:
-	controllers  []&vweb.ControllerPath
-	template_dir string                 [vweb_global]
-	upload_dir   string                 [vweb_global]
+	template_dir string [vweb_global]
+	upload_dir   string [vweb_global]
 pub mut:
 	dev    bool        [vweb_global] // used by Vaunt internally
 	seo    vaunt.SEO   [vweb_global] // SEO configuration
@@ -34,7 +35,7 @@ fn main() {
 	// init theme configuration
 	theme := get_theme()
 	// setup database and controllers
-	controllers := vaunt.init(db, template_dir, upload_dir, theme)!
+	controllers := vaunt.init(db, template_dir, upload_dir, theme, app_secret)!
 
 	// create the app
 	mut app := &App{
@@ -69,6 +70,7 @@ fn main() {
 
 // fetch the new latest theme before processing a request
 pub fn (mut app App) before_request() {
+	app.is_superuser = vaunt.is_superuser(mut app.Context, app_secret)
 	// only update when request is a route, assuming all resources contain a "."
 	if app.req.url.contains('.') == false {
 		app.theme_css = vaunt.update_theme(app.db, mut app.theme)
@@ -86,8 +88,8 @@ pub fn (mut app App) home() vweb.Result {
 	title := 'Home'
 
 	// get all articles that we want to display
-	articles := vaunt.get_all_articles(mut app.db).filter(it.show == true)
-	categories := vaunt.get_all_categories(mut app.db)
+	articles := vaunt.get_all_articles(app.db).filter(it.show == true)
+	categories := vaunt.get_all_categories(app.db)
 
 	// render content into our layout
 	content := $tmpl('templates/home.html')
@@ -101,7 +103,7 @@ pub fn (mut app App) home() vweb.Result {
 // Article pages with a category
 ['/articles/:category_name/:article_name']
 pub fn (mut app App) category_article_page(category_name string, article_name string) vweb.Result {
-	article := vaunt.get_article_by_name(mut app.db, article_name) or { return app.not_found() }
+	article := vaunt.get_article_by_name(app.db, article_name) or { return app.not_found() }
 	if article.show == false {
 		return app.not_found()
 	}
@@ -132,7 +134,7 @@ pub fn (mut app App) category_article_page(category_name string, article_name st
 ['/articles/:article_name']
 pub fn (mut app App) article_page(article_name string) vweb.Result {
 	// we don't want to render articles where `show` is set to `false`
-	article := vaunt.get_article_by_name(mut app.db, article_name) or { return app.not_found() }
+	article := vaunt.get_article_by_name(app.db, article_name) or { return app.not_found() }
 	if article.show == false {
 		return app.not_found()
 	}

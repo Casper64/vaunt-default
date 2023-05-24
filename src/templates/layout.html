@@ -21,7 +21,7 @@
     <div class="nav-links">
         <a href="/">Home</a>
         <a href="/about">About</a>
-        @if app.dev
+        @if app.is_superuser
         <a href="/admin">Admin Panel</a>
         @endif
     </div>
