@@ -70,6 +70,9 @@ fn main() {
 
 // fetch the new latest theme before processing a request
 pub fn (mut app App) before_request() {
+	// copy database connection to Util
+	app.Util.db = app.db
+
 	app.is_superuser = vaunt.is_superuser(mut app.Context, app_secret)
 	// only update when request is a route, assuming all resources contain a "."
 	if app.req.url.contains('.') == false {
@@ -86,10 +89,6 @@ pub fn (mut app App) home() vweb.Result {
 
 	// html title
 	title := 'Home'
-
-	// get all articles that we want to display
-	articles := vaunt.get_all_articles(app.db).filter(it.show == true)
-	categories := vaunt.get_all_categories(app.db)
 
 	// render content into our layout
 	content := $tmpl('templates/home.html')

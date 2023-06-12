@@ -1,10 +1,10 @@
 <div class="articles">
     
 <!-- Articles with Category -->
-@for category in categories
+@for category in app.get_all_categories()
     <h2>Category @category.name</h2>
-    @for article in articles.filter(it.category_id == category.id)
-    <a href="@{app.article_url(app.db, article)}" class="article">
+    @for article in app.get_articles_by_category(category.id).visible()
+    <a href="@{app.article_url(article)}" class="article">
         <h2>@article.name</h2>
         <img class="article-img" src="@article.image_src" alt="[image]">
         <p class="description">@article.description</p>
@@ -16,8 +16,8 @@
     
 <h2>Other Articles</h2>
 <!-- Articles without a Category -->
-@for article in articles.filter(it.category_id == 0)
-    <a href="@{app.article_url(app.db, article)}" class="article">
+@for article in app.get_all_articles().visible().no_category()
+    <a href="@{app.article_url(article)}" class="article">
         <h2>@article.name</h2>
         <img class="article-img" src="@article.image_src" alt="[image]">
         <p class="description">@article.description</p>
