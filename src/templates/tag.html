@@ -1,0 +1,9 @@
+<h1>Tag @tag.name with color "@tag.color"</h1>
+
+<p>All articles with tag "@tag.name"</p>
+
+<div>
+@for article in app.get_articles_by_tag(tag.name).visible()
+    <p>Article @article.name <a href="@{app.article_url(article)}">view</a></p>
+@endfor
+</div>

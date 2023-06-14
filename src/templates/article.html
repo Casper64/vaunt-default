@@ -4,4 +4,8 @@
 <img src="@article.image_src" alt="@article.name image">
 @endif
 
+@for tag in app.get_tags_from_article(article.id)
+    <a href="/tags/@tag.name" style="background-color: @tag.color; color: white;">Go to tag page of @tag.name</a>
+@endfor
+
 @article_html

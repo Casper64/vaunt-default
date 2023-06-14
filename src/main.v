@@ -159,6 +159,20 @@ pub fn (mut app App) article_page(article_name string) vweb.Result {
 	return app.html(app.s_html)
 }
 
+// Page for each tag
+['/tags/:tag_name']
+pub fn (mut app App) tag_page(tag_name string) vweb.Result {
+	tag := app.get_tag(tag_name) or { return app.not_found() }
+	title := 'Vaunt | ${tag.name}'
+
+	content := $tmpl('templates/tag.html')
+	layout := $tmpl('templates/layout.html')
+
+	// save the html for the generator
+	app.s_html = layout
+	return app.html(app.s_html)
+}
+
 // will be generated to `about.html` when no route attribute is provided
 pub fn (mut app App) about() vweb.Result {
 	app.seo.og.title = 'About Me'

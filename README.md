@@ -75,6 +75,8 @@ v run src --generate
     │   ├── articles/    // Directory that contains all generated html for an article
     │   │   ├── [categories]    // category folders
     │   │   └── [id].html       // html for article with id=[id]
+    │   ├── tags/        // Directory that contains all html pages for tags
+    │   │   └── [name].html     // html for tag with name=[name]    
     │   ├── home.html    // Home page (index.html)
     │   └── layout.html  // Default layout
     ├── main.v  // entrypoint
