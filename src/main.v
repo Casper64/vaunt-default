@@ -21,11 +21,10 @@ pub:
 	template_dir string [vweb_global]
 	upload_dir   string [vweb_global]
 pub mut:
-	dev    bool        [vweb_global] // used by Vaunt internally
-	seo    vaunt.SEO   [vweb_global] // SEO configuration
-	db     pg.DB
-	theme  ThemeConfig // Theming configuration
-	s_html string      // used by Vaunt to generate html
+	dev   bool        [vweb_global] // used by Vaunt internally
+	seo   vaunt.SEO   [vweb_global] // SEO configuration
+	db    pg.DB
+	theme ThemeConfig // Theming configuration
 }
 
 fn main() {
