@@ -4,7 +4,6 @@ Module {
     version: ''
     license: ''
     dependencies: [
-      'https://github.com/Casper64/vaunt',
-      'markdown'
+      'https://github.com/Casper64/vaunt'
   ]
 }
