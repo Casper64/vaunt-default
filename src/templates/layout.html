@@ -17,10 +17,10 @@
 </head>
 <body>
 <nav class="@{app.theme.nav_align.selected}">
-    <a href="/" class="brand">Vaunt</a>
+    <a href=@{app.url('/')} class="brand">Vaunt</a>
     <div class="nav-links">
-        <a href="/">Home</a>
-        <a href="/about">About</a>
+        <a href=@{app.url('/')}>Home</a>
+        <a href=@{app.url('/about')}>About</a>
         @if app.is_superuser
         <a href="/admin">Admin Panel</a>
         @endif

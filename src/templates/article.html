@@ -1,11 +1,9 @@
 <h1>@article.name</h1>
 <p>@article.description</p>
-@if article.thumbnail != 0
-<img src="@article.image_src" alt="@article.name image">
-@endif
+@{app.html_picture_from_article_thumbnail(article)}
 
 @for tag in app.get_tags_from_article(article.id)
-    <a href="/tags/@tag.name" style="background-color: @tag.color; color: white;">Go to tag page of @tag.name</a>
+    <a href=@{app.url('/tags/@tag.name')} style="background-color: @tag.color; color: white;">Go to tag page of @tag.name</a>
 @endfor
 
 @article_html
