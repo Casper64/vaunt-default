@@ -2,7 +2,7 @@ module main
 
 import vaunt
 import vweb
-import db.pg
+import db.sqlite
 import time
 
 const (
@@ -22,13 +22,13 @@ pub:
 pub mut:
 	dev   bool        [vweb_global] // used by Vaunt internally
 	seo   vaunt.SEO   [vweb_global] // SEO configuration
-	db    pg.DB
+	db    sqlite.DB
 	theme ThemeConfig // Theming configuration
 }
 
 fn main() {
-	// insert your own credentials
-	db := pg.connect(user: 'dev', password: 'password', dbname: 'vaunt')!
+	// insert your own database
+	db := sqlite.connect('app.db')!
 
 	// init theme configuration
 	theme := get_theme()
