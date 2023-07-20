@@ -2,6 +2,9 @@
 <p>@article.description</p>
 @{app.html_picture_from_article_thumbnail(article)}
 
+<h2>Table of contents:</h2>
+@{app.get_toc(article)}
+
 @for tag in app.get_tags_from_article(article.id)
     <a href=@{app.url('/tags/@tag.name')} style="background-color: @tag.color; color: white;">Go to tag page of @tag.name</a>
 @endfor
