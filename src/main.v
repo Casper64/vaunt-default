@@ -7,6 +7,7 @@ import time
 
 const (
 	template_dir = 'src/templates' // where you want to store templates
+	md_dir       = 'md' // where you want to serve markdown files from
 	upload_dir   = 'uploads' // where you want to store uploads
 	app_secret   = 'my-256-bit-secret' // secret key used to generate secure hashes
 )
@@ -62,8 +63,12 @@ fn main() {
 
 	// serve all css files from 'static'
 	app.handle_static('static', true)
+
+	// generate settings
+	settings := vaunt.GenerateSettings{}
+
 	// start the Vaunt server
-	vaunt.start(mut app, 8080)!
+	vaunt.start(mut app, 8080, settings)!
 }
 
 // fetch the new latest theme before processing a request
@@ -176,9 +181,19 @@ pub fn (mut app App) about() vweb.Result {
 	return app.html(layout)
 }
 
-// redirect to home when an url is not found
-pub fn (mut app App) not_found() vweb.Result {
-	return app.redirect('/')
+// serve markdown files from the "md" directory
+['/md/:path...']
+pub fn (mut app App) from_markdown_folder(path string) vweb.Result {
+	title := 'markdown | ${path}'
+	content := vaunt.get_html_from_markdown(md_dir, path) or {
+		// markdown file does not exist
+		return app.not_found()
+	}
+
+	layout := $tmpl('templates/layout.html')
+	// save the html for the generator
+	app.s_html = layout
+	return app.html(layout)
 }
 
 // string format function used in home.html

@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../../../../vaunt-dev"
+		},
+		{
+			"path": "../../../../app-dev"
+		},
+		{
+			"path": "../.."
+		}
+	],
+	"settings": {}
+}
