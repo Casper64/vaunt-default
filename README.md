@@ -67,7 +67,7 @@ v run src --generate
 ## Folder Structure
 ```tree
 .
-├── public   // contains markdown files that will be served as html (prepend the url '/md/' without the ".md" extension)
+├── md       // contains markdown files that will be served as html (prepend the url '/md/' without the ".md" extension)
 ├── public   // contains all files to host your static website
 ├── static   // contains all static assets and will be available globally
 ├── uploads  // contains all image uploads
