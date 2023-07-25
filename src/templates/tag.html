@@ -4,6 +4,6 @@
 
 <div>
 @for article in app.get_articles_by_tag(tag.name).visible()
-    <p>Article @article.name <a href=@{app.article_url(article)}>view</a></p>
+    <p>Article @article.name <a href="@{app.article_url(article)}">view</a></p>
 @endfor
 </div>
