@@ -8,17 +8,12 @@ A theme you can use to make your [Vaunt App](https://github.com/Casper64/vaunt).
 Make sure you have V installed. You can check out the 
 [documentation](https://github.com/vlang/v/#installing-v-from-source) to install V.
 
-If you have installed V make sure you have the latest version installed by running `v up`.
+If you have installed V make sure you have the latest version by running `v up`.
 
 Now you are able to import Vaunt directly into your projects with `import vaunt`!
 
 ## Database
-For now Vaunt only supports PostgreSQL. You can start a database with 
-```
-sudo -u postgres psql -c "create database vaunt"
-```
-
-Change your credentials in `main.v` to connect to the database.
+The default database will be a sqlite file.
 
 ## Quick Start
 Clone the repository and go into the directory
@@ -30,7 +25,6 @@ cd vaunt-app
 ### Installation
 Run `v install` to install Vaunt with the V package manager.
 Now you are able to import Vaunt directly into your projects with `import vaunt`!
-
 
 Start the dev server by running the following command:
 ```
@@ -45,7 +39,6 @@ To be able to access the admin you will need to create a superuser.
 ```bash
 v run src --create-superuser
 ```
-
 
 The admin panel is accessible at the "/admin" route, or if you click the
 `"Admin Panel"` button.
@@ -67,7 +60,7 @@ v run src --generate
 ## Folder Structure
 ```tree
 .
-├── md       // contains markdown files that will be served as html (prepend the url '/md/' without the ".md" extension)
+├── md       // contains markdown files that will be served as html (accessible from '/md/' without ".md")
 ├── public   // contains all files to host your static website
 ├── static   // contains all static assets and will be available globally
 ├── uploads  // contains all image uploads

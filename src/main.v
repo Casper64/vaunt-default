@@ -21,7 +21,7 @@ pub:
 	template_dir string [vweb_global]
 	upload_dir   string [vweb_global]
 pub mut:
-	dev   bool        [vweb_global] // used by Vaunt internally
+	dev   bool        [vweb_global]      // used by Vaunt internally
 	seo   vaunt.SEO   [vweb_global] // SEO configuration
 	db    sqlite.DB
 	theme ThemeConfig // Theming configuration
@@ -65,7 +65,13 @@ fn main() {
 	app.handle_static('static', true)
 
 	// generate settings
-	settings := vaunt.GenerateSettings{}
+	settings := vaunt.GenerateSettings{
+		dynamic_routes: {
+			'from_markdown_folder': vaunt.MarkdownDynamicRoute{
+				md_dir: md_dir
+			}
+		}
+	}
 
 	// start the Vaunt server
 	vaunt.start(mut app, 8080, settings)!
